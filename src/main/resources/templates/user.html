@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>User page</title>
+</head>
+<body>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout"/>
+</form>
+<h3>
+    <p>
+        <label th:text="${user.email}">user@email.com</label>
+        <label>with roles: </label>
+        <label th:each="role : ${user.roles}">
+            <label th:text="${role}">ROLE</label>
+        </label>
+    </p>
+</h3>
+<label th:text="${user.firstname}">Name</label>
+<h1>User information page</h1>
+<div>About user</div>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Role</th>
+    </tr>
+    <tr>
+        <td th:text="${user.id}">id</td>
+        <td th:text="${user.firstname}">first name</td>
+        <td th:text="${user.lastName}">last name</td>
+        <td th:text="${user.age}">age</td>
+        <td th:text="${user.email}">email</td>
+        <td><label th:each="role : ${user.roles}">
+            <label th:text="${role}">ROLE </label>
+        </label></td>
+    </tr>
+</table>
+<br>
+<input type="button" value="Back" onclick="history.back();"/>
+</body>
+</html>

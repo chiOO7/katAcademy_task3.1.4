@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+<h3>Edit user</h3>
+<form th:method="patch" th:action="@{/admin/edit/{id}(id=${user.get().getId()})}" th:object="${user}">
+    <div>
+        <label for="name">First name</label>
+    </div>
+    <div>
+        <input id="name" type="text" th:field="*{firstname}"/>
+    </div>
+    <div>
+        <label for="lastName">Last name</label>
+    </div>
+    <div>
+        <input id="lastName" type="text" th:field="*{lastName}"/>
+    </div>
+    <div>
+        <label for="age">Age</label>
+    </div>
+    <div>
+        <input id="age" type="text" th:field="*{age}"/>
+    </div>
+    <div>
+        <label for="email">Email</label>
+    </div>
+    <div>
+        <input id="email" type="text" th:field="*{email}"/>
+    </div>
+    <div>
+        <label for="pass">Password</label>
+    </div>
+    <div>
+        <input id="pass" type="text" th:field="*{password}"/>
+    </div>
+    <div>
+        <label for="role">Role</label>
+    </div>
+    <div>
+        <select id="role" th:field="*{roles}">
+            <option th:value="'USER'">USER</option>
+            <option th:value="'ADMIN'">ADMIN</option>
+        </select>
+    </div>
+    <br>
+    <div>
+        <input type="button" value="Close" onclick="history.back();"/>
+        <input type="submit" value="Edit"/>
+    </div>
+</form>
+</body>
+</html>
