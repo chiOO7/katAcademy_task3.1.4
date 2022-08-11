@@ -2,45 +2,107 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User page</title>
+    <style>
+        .logoutref
+        a {
+            color: #8d8176;
+            text-decoration: none !important;
+            border: none !important;
+        }
+
+        a:hover {
+            color: #fff !important;
+        }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout"/>
-</form>
-<h3>
-    <p>
-        <label th:text="${user.email}">user@email.com</label>
+<body class="bg-light">
+<header class="text-bg-dark p-3 row ">
+
+    <div class="col">
+        <strong><label th:text="${user.username}">admin@email.com</label></strong>
         <label>with roles: </label>
         <label th:each="role : ${user.roles}">
             <label th:text="${role}">ROLE</label>
+            &nbsp;
         </label>
-    </p>
-</h3>
-<label th:text="${user.firstname}">Name</label>
-<h1>User information page</h1>
-<div>About user</div>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
-    <tr>
-        <td th:text="${user.id}">id</td>
-        <td th:text="${user.firstname}">first name</td>
-        <td th:text="${user.lastName}">last name</td>
-        <td th:text="${user.age}">age</td>
-        <td th:text="${user.email}">email</td>
-        <td><label th:each="role : ${user.roles}">
-            <label th:text="${role}">ROLE </label>
-        </label></td>
-    </tr>
-</table>
-<br>
-<input type="button" value="Back" onclick="history.back();"/>
+    </div>
+    <div class='col d-flex justify-content-end'>
+        <!--            <form th:action="@{/logout}" method="post">-->
+        <!--                <input type="submit" value="Logout"/>-->
+        <!--            </form>-->
+        <div class="logoutref"><a th:href="@{/logout}">Logout</a></div>
+    </div>
+
+</header>
+<div class="row">
+    <div class="d-flex align-items-start">
+        <!--sidebar-->
+        <div class="nav flex-column col-2 nav-pills me-2 py-3 bg-white " style="height:1000px" id="v-pills-tab"
+             role="tablist"
+             aria-orientation="vertical">
+            <span style="text-align: left" class="nav-link active" id="v-pills-user-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-user"
+                    type="text" role="tab" aria-controls="v-pills-user" aria-selected="true">User
+            </span>
+        </div>
+        <!--mainwindow-->
+        <div class="tab-content container-fluid" id="v-pills-tabContent">
+            <!--user tab-->
+            <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab"
+                 tabindex="0">
+                <!--label-->
+                <div class="container-fluid py-3">
+                    <h1>User information page</h1>
+                </div>
+                <!--user content-->
+                <div class="container-fluid border">
+                    <h5 class="row p-2 m-0 ">About user</h5>
+                    <div class="row bg-white p-4 border-top">
+                        <table class="table table-striped">
+                            <thead class="table border-top">
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table" style="vertical-align: middle;">
+                            <tr>
+                                <td th:text="${user.id}">id</td>
+                                <td th:text="${user.firstname}">first name</td>
+                                <td th:text="${user.lastName}">last name</td>
+                                <td th:text="${user.age}">age</td>
+                                <td th:text="${user.email}">email</td>
+                                <td><label class="p-0" th:each="role : ${user.roles}">
+                                    <label class="p-0" th:text="${role}">ROLE</label>
+                                    &nbsp;
+                                </label></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+            integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+            integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+            crossorigin="anonymous"></script>
+</div>
 </body>
 </html>

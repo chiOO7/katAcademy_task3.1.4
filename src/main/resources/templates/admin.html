@@ -2,58 +2,523 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin panel</title>
+    <style>
+        .logoutref
+        a {
+            color: #8d8176;
+            text-decoration: none !important;
+            border: none !important;
+        }
+
+        a:hover {
+            color: #fff !important;
+        }
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
-<body>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout"/>
-</form>
-<h3>
-    <div>
-        <label th:text="${user.email}">admin@email.com</label>
+<body class="bg-light">
+<header class="text-bg-dark p-3 row ">
+
+    <div class="col">
+        <strong><label th:text="${admin.username}">admin@email.com</label></strong>
         <label>with roles: </label>
-        <label th:each="role : ${user.roles}">
+        <label th:each="role : ${admin.roles}">
             <label th:text="${role}">ROLE</label>
+            &nbsp;
         </label>
     </div>
-</h3>
-<div th:each="user : ${users}">
-    <a th:href="@{/user/{id}(id=${user.getId()})}" th:text="${user.firstname}">Name</a>
+    <div class='col d-flex justify-content-end'>
+        <div class="logoutref"><a th:href="@{/logout}">Logout</a></div>
+    </div>
+
+</header>
+<div class="row">
+    <div class="d-flex align-items-start">
+        <!--sidebar-->
+        <div class="nav flex-column col-2 nav-pills me-2 py-3 bg-white " style="height:1000px" id="v-pills-tab"
+             role="tablist"
+             aria-orientation="vertical">
+            <button style="text-align: left" class="nav-link active" id="v-pills-admin-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-admin"
+                    type="button" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin
+            </button>
+            <button style="text-align: left" class="nav-link" id="v-pills-user-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-user"
+                    type="button" role="tab" aria-controls="v-pills-user" aria-selected="false">User
+            </button>
+        </div>
+        <!--mainwindow-->
+        <div class="tab-content container-fluid" id="v-pills-tabContent">
+            <!--admin tab-->
+            <div class=" tab-pane fade show active" id="v-pills-admin" role="tabpanel"
+                 aria-labelledby="v-pills-admin-tab" tabindex="0">
+                <!--label-->
+                <div class="container-fluid py-3">
+                    <h1>Admin panel</h1>
+                </div>
+                <!--admin content-->
+                <div class="container-fluid">
+                    <!--nav tabs-->
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="users_table-tab" data-bs-toggle="tab"
+                                    data-bs-target="#users_table-tab-pane" type="button" role="tab"
+                                    aria-controls="users_table-tab-pane" aria-selected="true">Users table
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="new_user-tab" data-bs-toggle="tab"
+                                    data-bs-target="#new_user-tab-pane" type="button" role="tab"
+                                    aria-controls="new_user-tab-pane" aria-selected="false">New user
+                            </button>
+                        </li>
+                    </ul>
+                    <!--tabs content-->
+                    <div class="tab-content border " id="myTabContent">
+                        <!--all users-->
+                        <div class="tab-pane fade show active" id="users_table-tab-pane" role="tabpanel"
+                             aria-labelledby="users_table-tab" tabindex="0">
+                            <div class="container-fluid">
+                                <h5 class="row p-2 m-0 ">All users</h5>
+                                <div class="row bg-white p-4 border-top">
+                                    <table class="table table-striped">
+                                        <thead class="border-bottom border-top">
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Age</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody style="vertical-align: middle;">
+                                        <tr th:each="user1 : ${users}">
+                                            <td th:text="${user1.id}">id</td>
+                                            <td th:text="${user1.firstname}">first name</td>
+                                            <td th:text="${user1.lastName}">last name</td>
+                                            <td th:text="${user1.age}">age</td>
+                                            <td th:text="${user1.email}">email</td>
+                                            <td><label th:each="role : ${user1.roles}">
+                                                <label class="p-0" th:text="${role}">ROLE </label>
+                                                &nbsp;
+                                            </label></td>
+                                            <td>
+                                                <!-- Кнопка-триггер модального окна -->
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal"
+                                                        th:attrappend="data-bs-target=${user1.id}">Edit
+                                                </button>
+                                                <!-- Модальное окно -->
+                                                <div class="modal fade" th:id="'exampleModal' + ${user1.id}"
+                                                     tabindex="-1"
+                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                                    Edit
+                                                                    user</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+
+                                                            <form class="modal-form" th:method="patch"
+                                                                  th:action="@{/admin/edit/{id}(id=${user1.id})}"
+                                                                  th:object="${user1}">
+
+                                                                <div class="form-group col-6 container-sm bg-white justify-content-center text-center">
+                                                                    <div class="modal-body">
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="id_ed"><strong>ID</strong></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input readonly
+                                                                                       style="max-width: 400px"
+                                                                                       type="text" id="id_ed"
+                                                                                       class="form-control"
+                                                                                       name="id" th:value="${user1.id}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="firstname_ed"><strong>First
+                                                                                    name</strong></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input style="max-width: 400px"
+                                                                                       minlength="3" required
+                                                                                       type="text" id="firstname_ed"
+                                                                                       class="form-control"
+                                                                                       name="firstname"
+                                                                                       placeholder="First name"
+                                                                                       th:value="${user1.firstname}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="lastName_ed"><strong>Last
+                                                                                    name</strong></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input style="max-width: 400px"
+                                                                                       minlength="3" required
+                                                                                       placeholder="Last name"
+                                                                                       type="text" id="lastName_ed"
+                                                                                       class="form-control"
+                                                                                       name="lastName"
+                                                                                       th:value="${user1.getLastName()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="age_ed"><b>Age</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input style="max-width: 400px"
+                                                                                       min="0" required
+                                                                                       placeholder="Age"
+                                                                                       id="age_ed"
+                                                                                       class="form-control"
+                                                                                       type="number"
+                                                                                       name="age"
+                                                                                       th:value="${user1.getAge()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="email1"><b>Email</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input style="max-width: 400px"
+                                                                                       required
+                                                                                       placeholder="Email"
+                                                                                       id="email1" type="email"
+                                                                                       name="email"
+                                                                                       class="form-control"
+                                                                                       th:value="${user1.email}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="pass_ed"><b>Password</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input style="max-width: 400px"
+                                                                                       required
+                                                                                       placeholder="Password"
+                                                                                       id="pass_ed" type="password"
+                                                                                       class="form-control"
+                                                                                       name="password"
+
+                                                                                       th:value="${user1.password}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="role_ed"><b>Role</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <select style="max-width: 400px"
+                                                                                        required
+                                                                                        multiple class="form-select"
+                                                                                        size="2"
+                                                                                        id="role_ed"
+                                                                                        name="roles"
+                                                                                        th:value="${user1.roles}">
+                                                                                    <option th:value="'USER'">USER
+                                                                                    </option>
+                                                                                    <option th:value="'ADMIN'">ADMIN
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close
+                                                                    </button>
+                                                                    <input type="submit" value="Edit"
+                                                                           class="btn btn-primary"/>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                            <td>
+                                                <!-- Кнопка-триггер модального окна -->
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+
+                                                        data-bs-target="#exampleModal2"
+                                                        th:attrappend="data-bs-target=${user1.id}">
+
+                                                    Delete
+                                                </button>
+
+                                                <!-- Модальное окно -->
+                                                <div class="modal fade" th:id="'exampleModal2' + ${user1.id}"
+                                                     tabindex="-1"
+                                                     aria-labelledby="exampleModal2Label" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModal2Label">
+                                                                    Delete
+                                                                    user</h5>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+
+                                                            <form th:method="delete"
+                                                                  th:action="@{/admin/delete/{id}(id=${user1.id})}">
+                                                                <div class="form-group col-6 container-sm bg-white justify-content-center text-center">
+                                                                    <div class="modal-body">
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="id_del"><b>Id</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input readonly
+                                                                                        type="text" id="id_del"
+                                                                                       class="form-control"
+                                                                                       th:value="${user1.firstname}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="firstname_del"><b>First
+                                                                                    name</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input type="text" id="firstname_del"
+                                                                                       class="form-control"
+                                                                                       readonly
+                                                                                       th:value="${user1.getFirstname()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="lastName_del"><b>Last
+                                                                                    name</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input type="text" id="lastName_del"
+                                                                                       class="form-control" readonly
+                                                                                       th:value="${user1.getLastName()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="age_del"><b>Age</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input id="age_del" type="text"
+                                                                                       class="form-control" readonly
+                                                                                       th:value="${user1.getAge()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="email_del"><b>Email</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <input id="email_del" type="text"
+                                                                                       class="form-control" readonly
+                                                                                       th:value="${user1.getEmail()}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="py-2">
+                                                                            <div>
+                                                                                <label for="role_del"><b>Role</b></label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <select style="max-width: 400px"
+                                                                                        disabled
+                                                                                        multiple class="form-select"
+                                                                                        size="2"
+                                                                                        id="role_del"
+
+                                                                                        th:value="${user1.roles}">
+                                                                                    <option th:value="'USER'">USER
+                                                                                    </option>
+                                                                                    <option th:value="'ADMIN'">ADMIN
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close
+                                                                    </button>
+                                                                    <input type="submit" value="DELETE"
+                                                                           class="btn btn-primary"/>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--new user-->
+                        <div class="tab-pane fade" id="new_user-tab-pane" role="tabpanel" aria-labelledby="new_user-tab"
+                             tabindex="0">
+                            <div class="container-fluid">
+                                <h5 class="row p-2 m-0 ">Add new user</h5>
+                                <div class="row bg-white p-4 border-top ">
+                                    <!--                                    llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll-->
+                                    <div class="container bg-white d-flex justify-content-center text-center">
+                                        <form th:method="post" th:action="@{/admin/add}"
+                                              th:object="${new_user}">
+                                            <div class="py-2 ">
+                                                <div>
+                                                    <label for="name"><strong>First
+                                                        name</strong></label>
+                                                </div>
+                                                <div>
+                                                    <input style="width: 400px; " minlength="3" required id="name"
+                                                           type="text" class="form-control" placeholder="First name"
+                                                           th:field="*{firstname}"/>
+                                                </div>
+                                            </div>
+                                            <div class="py-2 ">
+                                                <div>
+                                                    <label for="lastName"><strong>Last
+                                                        name</strong></label>
+                                                </div>
+                                                <div>
+                                                    <input style="width: 400px; " minlength="3" required id="lastName"
+                                                           type="text" class="form-control" placeholder="Last name"
+                                                           th:field="*{lastName}"/>
+                                                </div>
+                                            </div>
+                                            <div class="py-2 ">
+                                                <div>
+                                                    <label for="age"><strong>Age</strong></label>
+                                                </div>
+                                                <div>
+                                                    <input style="width: 400px; " required id="age" min="0"
+                                                           placeholder="Age"
+                                                           type="number" class="form-control" th:field="*{age}"/>
+                                                </div>
+                                            </div>
+                                            <div class="py-2 ">
+                                                <div>
+                                                    <label for="email"><strong>Email</strong></label>
+                                                </div>
+                                                <div>
+                                                    <input style="width: 400px; " required id="email"
+                                                           placeholder="Email"
+                                                           type="email" class="form-control"
+                                                           th:field="*{email}"/>
+                                                </div>
+                                            </div>
+                                            <div class="py-2 ">
+                                                <div>
+                                                    <label for="pass"><strong>Password</strong></label>
+                                                </div>
+                                                <div>
+                                                    <input style="width: 400px; " required id="pass"
+                                                           type="password" class="form-control" placeholder="Password"
+                                                           th:field="*{password}"/>
+                                                </div>
+                                            </div>
+                                            <div class="py-2 ">
+                                                <div>
+                                                    <label for="role"><strong>Role</strong></label>
+                                                </div>
+                                                <div>
+                                                    <select multiple class="form-select" name="role" size="2"
+                                                            style="width: 400px"
+                                                            id="role" aria-label="role" required
+                                                            th:field="*{roles}">
+                                                        <option th:value="'USER'">USER</option>
+                                                        <option th:value="'ADMIN'">ADMIN</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div>
+                                                <input type="submit" class="btn btn-success" value="Add new user"/>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--user tab-->
+            <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab"
+                 tabindex="0">
+                <!--label-->
+                <div class="container-fluid py-3">
+                    <h1>User information page</h1>
+                </div>
+                <!--user content-->
+                <div class="container-fluid border">
+                    <h5 class="row p-2 m-0 ">About user</h5>
+                    <div class="row bg-white p-4 border-top">
+                        <table class="table table-striped">
+                            <thead class="table border-top">
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Age</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table" style="vertical-align: middle;">
+                            <tr>
+                                <td th:text="${admin.id}">id</td>
+                                <td th:text="${admin.firstname}">first name</td>
+                                <td th:text="${admin.lastName}">last name</td>
+                                <td th:text="${admin.age}">age</td>
+                                <td th:text="${admin.email}">email</td>
+                                <td><label class="p-0" th:each="role : ${admin.roles}">
+                                    <label class="p-0" th:text="${role}">ROLE</label>
+                                    &nbsp;
+                                </label></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+            integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+            integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+            crossorigin="anonymous"></script>
 </div>
-<h1>Admin panel</h1>
-<div><label>User table</label>
-    <a href="/admin/add">New User</a>
-</div>
-<div>All users</div>
-<table th:each="user : ${users}">
-    <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr> <!--ряд с ячейками заголовков-->
-    <tr>
-        <td th:text="${user.id}">id</td>
-        <td th:text="${user.firstname}">first name</td>
-        <td th:text="${user.lastName}">last name</td>
-        <td th:text="${user.age}">age</td>
-        <td th:text="${user.email}">email</td>
-        <td><label th:each="role : ${user.roles}">
-            <label th:text="${role}">ROLE </label>
-        </label></td>
-        <td>
-            <form th:method="get" th:action="@{/admin/edit/{id}(id=${user.getId()})}">
-                <input type="submit" value="Edit"/>
-            </form>
-        </td>
-        <td>
-            <form th:method="delete" th:action="@{/admin/delete/{id}(id=${user.getId()})}">
-                <input type="submit" value="Delete"/>
-            </form>
-        </td>
-    </tr>
-</table>
 </body>
 </html>

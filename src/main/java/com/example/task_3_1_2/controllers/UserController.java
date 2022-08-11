@@ -2,6 +2,8 @@ package com.example.task_3_1_2.controllers;
 
 
 import com.example.task_3_1_2.models.User;
+import com.example.task_3_1_2.repos.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 public class UserController {
 
-    @GetMapping("/{user}")
-    String showUser(@PathVariable("user") User user, Model model) {
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping("")
+    String showUser(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (user.getUsername().equals(authentication.getName()) ||
-                AuthorityUtils.authorityListToSet(authentication.getAuthorities()).contains("ADMIN")) {
-            model.addAttribute("user", user);
-            return "user";
-        }
-        return "error";
+        User user = userRepository.findByUsername(authentication.getName());
+        model.addAttribute("user", user);
+        return "user";
+
     }
 }

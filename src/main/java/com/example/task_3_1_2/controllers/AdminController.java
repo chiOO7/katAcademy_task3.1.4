@@ -47,11 +47,25 @@ public class AdminController {
         return redirectToAdmin();
     }
 
-    @GetMapping(path = "/{user}")
-    public String showAllUsers(@PathVariable("user") User user, Model model) {
+//    @GetMapping(path = "/{user}")
+//    public String showAllUsers(@PathVariable("user") User user, Model model) {
+//        List<User> users = (List<User>) userRepository.findAll();
+//        model.addAttribute("user", user);
+//        model.addAttribute("users", users);
+//        return "admin";
+//    }
+
+    @GetMapping(path = "")
+    public String showAllUsers(Model model) {
         List<User> users = (List<User>) userRepository.findAll();
-        model.addAttribute("user", user);
+        User admin = users.stream().filter(x -> x.getEmail().equals(SecurityContextHolder.getContext()
+                .getAuthentication().getName())).findAny().get();
+//        model.addAttribute("email", admin.getEmail());
+//        model.addAttribute("roles", admin.getRoles());
+        model.addAttribute("admin", admin);
         model.addAttribute("users", users);
+        model.addAttribute("new_user", new User());
+//        model.addAttribute("repo", userRepository);
         return "admin";
     }
 
@@ -62,7 +76,8 @@ public class AdminController {
     }
 
     private String redirectToAdmin() {
-        User admin = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        return "redirect:/admin/" + admin.getId();
+//        User admin = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+//        return "redirect:/admin/" + admin.getId();
+        return "redirect:/admin";
     }
 }
