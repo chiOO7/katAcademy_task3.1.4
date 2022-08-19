@@ -14,16 +14,16 @@ import java.util.List;
 
 @Controller
 @RequestMapping(path = "/admin")
-@PreAuthorize("hasAuthority('ADMIN')")
+//@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping(path = "/add")
-    public String addUserPage(Model model) {
-        model.addAttribute("user", new User());
-        return "add_user";
-    }
+//    @GetMapping(path = "/add")
+//    public String addUserPage(Model model) {
+//        model.addAttribute("user", new User());
+//        return "add_user";
+//    }
 
     @PostMapping(path = "/add") // Map ONLY POST Requests
     public String addNewUser(@ModelAttribute("user") User user) {
@@ -33,11 +33,11 @@ public class AdminController {
         return redirectToAdmin();
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") long id) {
-        model.addAttribute("user", userRepository.findById(id));
-        return "edit";
-    }
+//    @GetMapping("/edit/{id}")
+//    public String edit(Model model, @PathVariable("id") long id) {
+//        model.addAttribute("user", userRepository.findById(id));
+//        return "edit";
+//    }
 
     @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") long id) {
@@ -47,25 +47,16 @@ public class AdminController {
         return redirectToAdmin();
     }
 
-//    @GetMapping(path = "/{user}")
-//    public String showAllUsers(@PathVariable("user") User user, Model model) {
-//        List<User> users = (List<User>) userRepository.findAll();
-//        model.addAttribute("user", user);
-//        model.addAttribute("users", users);
-//        return "admin";
-//    }
+
 
     @GetMapping(path = "")
     public String showAllUsers(Model model) {
         List<User> users = (List<User>) userRepository.findAll();
-        User admin = users.stream().filter(x -> x.getEmail().equals(SecurityContextHolder.getContext()
-                .getAuthentication().getName())).findAny().get();
-//        model.addAttribute("email", admin.getEmail());
-//        model.addAttribute("roles", admin.getRoles());
-        model.addAttribute("admin", admin);
+//        User admin = users.stream().filter(x -> x.getEmail().equals(SecurityContextHolder.getContext()
+//                .getAuthentication().getName())).findAny().get();
+//        model.addAttribute("admin", admin);
         model.addAttribute("users", users);
         model.addAttribute("new_user", new User());
-//        model.addAttribute("repo", userRepository);
         return "admin";
     }
 
@@ -76,8 +67,6 @@ public class AdminController {
     }
 
     private String redirectToAdmin() {
-//        User admin = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-//        return "redirect:/admin/" + admin.getId();
         return "redirect:/admin";
     }
 }
