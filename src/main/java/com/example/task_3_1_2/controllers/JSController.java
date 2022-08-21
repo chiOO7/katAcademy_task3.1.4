@@ -5,14 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping(path = "/scripts/scripts.js")
+@Controller
+@RequestMapping(path = "/script.js")
 public class JSController {
     @GetMapping
     String getScript() {
-        return "function test() {\n" +
-                "    alert(\"test!\")\n" +
-                "    // fetch(\"https://localhost\")\n" +
-                "}";
+        return "script.js";
     }
 }

@@ -22,24 +22,73 @@
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            updateTable()
+            updateUser();
+            updateTable();
         });
 
         async function updateTable() {
-            let url = '/data/users/';
-            let response = await fetch(url);
-            let users = await response.json();
+            let updateTableUrl = '/data/users/';
+            let updateTableResponse = await fetch(updateTableUrl);
+            let updateTableUsers = await updateTableResponse.json();
+            let allUsersTableBody = document.getElementById('all_users_table_body');
 
-            let table = document.getElementById('all_users_table');
-            let tbody = document.getElementById('all_users_table_body');
-
-            while (tbody.hasChildNodes()) {
-                tbody.removeChild(tbody.lastChild);
+            while (allUsersTableBody.hasChildNodes()) {
+                allUsersTableBody.removeChild(allUsersTableBody.lastChild);
             }
 
-            for (let i = 0; i < users.length; i++) {
-                tbody.appendChild(userRow(users[i]));
+            for (let i = 0; i < updateTableUsers.length; i++) {
+                allUsersTableBody.appendChild(userRow(updateTableUsers[i]));
             }
+        }
+
+        function userRowSimple(user) {
+            console.log(user);
+            let row = document.createElement('tr');
+            let colId = document.createElement('td');
+            colId.innerHTML = user.id;
+            let colFirstName = document.createElement('td');
+            colFirstName.innerHTML = user.firstname;
+            let colLastName = document.createElement('td');
+            colLastName.innerHTML = user.lastname;
+            let colAge = document.createElement('td');
+            colAge.innerHTML = user.age;
+            let colEmail = document.createElement('td');
+            colEmail.innerHTML = user.email;
+            let colRoles = document.createElement('td');
+            let allUsersTableUserRoles = "";
+            for (let j = 0; j < user.roles.length; j++) {
+                allUsersTableUserRoles += user.roles[j] + " ";
+            }
+            colRoles.innerHTML = allUsersTableUserRoles;
+
+            row.appendChild(colId);
+            row.appendChild(colFirstName);
+            row.appendChild(colLastName);
+            row.appendChild(colAge);
+            row.appendChild(colEmail);
+            row.appendChild(colRoles);
+
+            return row;
+        }
+
+        async function updateUser() {
+            let updateUserUrl = '/userdata';
+            let updateUserResponse = await fetch(updateUserUrl);
+            let updateUser = await updateUserResponse.json();
+            let headerUsername = document.getElementById('header_username');
+            let headerRoles = document.getElementById('header_roles');
+            headerUsername.innerHTML = updateUser.username;
+            let rolesStr = "";
+            for (let i = 0; i < updateUser.roles.length; i++) {
+                rolesStr += updateUser.roles[i];
+                if (i >= updateUser.roles.length - 1) break;
+                rolesStr += ", ";
+            }
+            headerRoles.innerHTML = rolesStr;
+
+            let userTableBody = document.getElementById('user_table_body');
+
+            userTableBody.appendChild(userRowSimple(updateUser));
         }
 
         function contains(arr, elem) {
@@ -52,117 +101,176 @@
         }
 
         async function editModal(id) {
-            let url = '/data/users/' + id;
-            let response = await fetch(url);
-            let editableUser = await response.json();
+            let openEditModalUrl = '/data/users/' + id;
+            let openEditModalResponse = await fetch(openEditModalUrl);
+            let editableUser = await openEditModalResponse.json();
             let editForm = document.getElementById('edit_form');
             editForm.reset();
-            let idField = document.getElementById('id_ed');
-            let firstNameField = document.querySelector('#firstname_ed');
-            let lastNameField = document.getElementById('lastName_ed');
-            let ageField = document.getElementById('age_ed');
-            let emailField = document.getElementById('email_ed');
-            let passField = document.getElementById('pass_ed');
-            let userOption = document.getElementById('user_option_ed');
-            if (contains(editableUser.roles, 'USER')) {
-                userOption.setAttribute('selected', '');
-            } else {
-                userOption.removeAttribute('selected');
-            }
-            let adminOption = document.getElementById('admin_option_ed');
-            if (contains(editableUser.roles, 'ADMIN')) {
-                adminOption.setAttribute('selected', '');
-            } else {
-                adminOption.removeAttribute('selected');
-            }
-            idField.setAttribute('value', editableUser.id);
-            firstNameField.setAttribute('value', editableUser.firstname);
-<!--                firstNameField.innerHTML = editableUser.firstname;-->
-            lastNameField.setAttribute('value', editableUser.lastname);
-            ageField.setAttribute('value', editableUser.age);
-            emailField.setAttribute('value', editableUser.email);
-            passField.setAttribute('value', editableUser.password);
+            let openEditModalIdField = document.getElementById('id_ed');
+            let openEditModalFirstNameField = document.getElementById('firstname_ed');
+            let openEditModalLastNameField = document.getElementById('lastName_ed');
+            let openEditModalAgeField = document.getElementById('age_ed');
+            let openEditModalEmailField = document.getElementById('email_ed');
+            let openEditModalPassField = document.getElementById('pass_ed');
+            let openEditModalUserOption = document.getElementById('user_option_ed');
+            contains(editableUser.roles, 'USER') ? openEditModalUserOption.setAttribute('selected', '') : openEditModalUserOption.removeAttribute('selected');
+            let openEditModalAdminOption = document.getElementById('admin_option_ed');
+            contains(editableUser.roles, 'ADMIN') ? openEditModalAdminOption.setAttribute('selected', '') : openEditModalAdminOption.removeAttribute('selected');
+            openEditModalIdField.setAttribute('value', editableUser.id);
+            openEditModalFirstNameField.setAttribute('value', editableUser.firstname);
+            openEditModalLastNameField.setAttribute('value', editableUser.lastname);
+            openEditModalAgeField.setAttribute('value', editableUser.age);
+            openEditModalEmailField.setAttribute('value', editableUser.email);
+            openEditModalPassField.setAttribute('value', editableUser.password);
     }
 
-        async function submitEditForm(editForm) {
-            let id = document.querySelector('#id_ed');
-            let firstName = document.querySelector('#firstname_ed');
-            let lastName = document.querySelector('#lastName_ed');
-            let age = document.querySelector('#age_ed');
-            let email = document.querySelector('#email_ed');
-            let password = document.querySelector('#pass_ed');
+        async function deleteModal(id) {
+            let openDeleteModalUrl = '/data/users/' + id;
+            let openDeleteModalResponse = await fetch(openDeleteModalUrl);
+            let deletableUser = await openDeleteModalResponse.json();
+            let deleteForm = document.getElementById('delete_form');
+            deleteForm.reset();
+            let openDeleteModalIdField = document.getElementById('id_del');
+            let openDeleteModalFirstNameField = document.getElementById('firstname_del');
+            let openDeleteModalLastNameField = document.getElementById('lastName_del');
+            let openDeleteModalAgeField = document.getElementById('age_del');
+            let openDeleteModalEmailField = document.getElementById('email_del');
+            let openDeleteModalPassField = document.getElementById('pass_del');
+            openDeleteModalIdField.setAttribute('value', deletableUser.id);
+            openDeleteModalFirstNameField.setAttribute('value', deletableUser.firstname);
+            openDeleteModalLastNameField.setAttribute('value', deletableUser.lastname);
+            openDeleteModalAgeField.setAttribute('value', deletableUser.age);
+            openDeleteModalEmailField.setAttribute('value', deletableUser.email);
+            openDeleteModalPassField.setAttribute('value', deletableUser.password);
+        }
 
-            let roles = document.querySelector('#role_ed');
+        async function submitEditForm() {
+            let editFormId = document.querySelector('#id_ed');
+            let editFormFirstName = document.querySelector('#firstname_ed');
+            let editFormLastName = document.querySelector('#lastName_ed');
+            let editFormAge = document.querySelector('#age_ed');
+            let editFormEmail = document.querySelector('#email_ed');
+            let editFormPassword = document.querySelector('#pass_ed');
+            let editFormRoles = document.querySelector('#role_ed');
+            let editFormRolesArray = [];
 
-            let role = [];
-
-            if (roles.multiple) {
-                for (var i = 0; i < roles.options.length; i ++) {
-                    if (roles.options[i].selected) role.push(roles.options[i].value);
+            if (editFormRoles.multiple) {
+                for (let i = 0; i < editFormRoles.options.length; i ++) {
+                    if (editFormRoles.options[i].selected) editFormRolesArray.push(editFormRoles.options[i].value);
                 }
-            } else role.push(roles.value);
+            } else editFormRolesArray.push(editFormRoles.value);
 
-            let response = await fetch('/data/edit', {
+            let editFormResponse = await fetch('/data/edit', {
                 method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(
                     {
-                        id: id.value,
-                        firstname: firstName.value,
-                        lastname: lastName.value,
-                        age: age.value,
-                        email: email.value,
-                        password: password.value,
-                        roles: role
+                        id: editFormId.value,
+                        firstname: editFormFirstName.value,
+                        lastname: editFormLastName.value,
+                        age: editFormAge.value,
+                        email: editFormEmail.value,
+                        password: editFormPassword.value,
+                        roles: editFormRolesArray
                     }
                 )
             });
-            let editedUser = await response.json();
+            let editedUser = await editFormResponse.json();
             let editedFirstName = document.getElementById('all_users_firstname_' + editedUser.id);
+            let editedLastName = document.getElementById('all_users_lastname_' + editedUser.id);
+            let editedAge = document.getElementById('all_users_age_' + editedUser.id);
+            let editedEmail = document.getElementById('all_users_email_' + editedUser.id);
+            let editedRoles = document.getElementById('all_users_roles_' + editedUser.id);
             editedFirstName.innerHTML = editedUser.firstname;
+            editedLastName.innerHTML = editedUser.lastname;
+            editedAge.innerHTML = editedUser.age;
+            editedEmail.innerHTML = editedUser.email;
+            editedRoles.innerHTML = editedUser.roles;
 
+            let editModalCloseButton = document.getElementById('edit_modal_close_button');
+            let event = new Event("click");
+            editModalCloseButton.dispatchEvent(event);
+            return false;
+        }
+
+        async function submitDeleteForm() {
+            let deleteFormId = document.querySelector('#id_del');
+            let deleteFormResponse = await fetch('/data/delete', {
+                method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(
+                    {
+                        id: deleteFormId.value,
+                        firstname: null,
+                        lastname: null,
+                        age: null,
+                        email: null,
+                        password: null,
+                        roles: null
+                    }
+                )
+            });
+            let deletedUser = await deleteFormResponse.json();
+            let deletedRow = document.getElementById('all_users_row_' + deletedUser.id);
+            deletedRow.remove();
+            let deleteModalCloseButton = document.getElementById('delete_modal_close_button');
+            let event = new Event("click");
+            deleteModalCloseButton.dispatchEvent(event);
+            return false;
         }
 
         function userRow(user) {
             let row = document.createElement('tr');
-            let rowId = document.createElement('td');
-            rowId.setAttribute('id', 'all_users_id_' + user.id);
-            rowId.innerHTML = user.id;
-            let rowFirstName = document.createElement('td');
-            rowFirstName.setAttribute('id', 'all_users_firstname_' + user.id);
-            rowFirstName.innerHTML = user.firstname;
-            let rowLastName = document.createElement('td');
-            rowLastName.innerHTML = user.lastname;
-            let rowAge = document.createElement('td');
-            rowAge.innerHTML = user.age;
-            let rowEmail = document.createElement('td');
-            rowEmail.innerHTML = user.email;
-            let rowRoles = document.createElement('td');
-            let roles = "";
+            row.setAttribute('id', 'all_users_row_' + user.id);
+            let colId = document.createElement('td');
+            colId.setAttribute('id', 'all_users_id_' + user.id);
+            colId.innerHTML = user.id;
+            let colFirstName = document.createElement('td');
+            colFirstName.setAttribute('id', 'all_users_firstname_' + user.id);
+            colFirstName.innerHTML = user.firstname;
+            let colLastName = document.createElement('td');
+            colLastName.setAttribute('id', 'all_users_lastname_' + user.id);
+            colLastName.innerHTML = user.lastname;
+            let colAge = document.createElement('td');
+            colAge.setAttribute('id', 'all_users_age_' + user.id);
+            colAge.innerHTML = user.age;
+            let colEmail = document.createElement('td');
+            colEmail.setAttribute('id', 'all_users_email_' + user.id);
+            colEmail.innerHTML = user.email;
+            let colRoles = document.createElement('td');
+            let allUsersTableUserRoles = "";
             for (let j = 0; j < user.roles.length; j++) {
-                roles += user.roles[j] + " ";
+                allUsersTableUserRoles += user.roles[j] + " ";
             }
-            rowRoles.innerHTML = roles;
-            let rowEdit = document.createElement('td');
+            colRoles.setAttribute('id', 'all_users_roles_' + user.id);
+            colRoles.innerHTML = allUsersTableUserRoles;
+            let colEdit = document.createElement('td');
             let editBtn = document.createElement('button');
             editBtn.innerHTML = 'Edit';
             editBtn.setAttribute('onclick', 'editModal(' + user.id + ')');
-            editBtn.setAttribute('class', 'btn btn-success');
+            editBtn.setAttribute('class', 'btn btn-info');
             editBtn.setAttribute('data-bs-toggle', 'modal');
-            editBtn.setAttribute('data-bs-target', '#exampleModal');
-            rowEdit.appendChild(editBtn);
+            editBtn.setAttribute('data-bs-target', '#editModal');
+            colEdit.appendChild(editBtn);
 
-            row.appendChild(rowId);
-            row.appendChild(rowFirstName);
-            row.appendChild(rowLastName);
-            row.appendChild(rowAge);
-            row.appendChild(rowEmail);
-            row.appendChild(rowRoles);
-            row.appendChild(rowEdit);
+            let colDelete = document.createElement('td');
+            let deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = 'Delete';
+            deleteBtn.setAttribute('onclick', 'deleteModal(' + user.id + ')');
+            deleteBtn.setAttribute('class', 'btn btn-danger');
+            deleteBtn.setAttribute('data-bs-toggle', 'modal');
+            deleteBtn.setAttribute('data-bs-target', '#deleteModal');
+            colDelete.appendChild(deleteBtn);
+
+            row.appendChild(colId);
+            row.appendChild(colFirstName);
+            row.appendChild(colLastName);
+            row.appendChild(colAge);
+            row.appendChild(colEmail);
+            row.appendChild(colRoles);
+            row.appendChild(colEdit);
+            row.appendChild(colDelete);
             return row;
         }
 
         async function newUserPost(newUserForm) {
 
-<!--            let newUserForm = document.getElementById('new_user_form');-->
             let firstName = newUserForm.querySelector('[name="new_user_name"]');
             let lastName = newUserForm.querySelector('[name="new_user_lastname"]');
             let age = newUserForm.querySelector('[name="new_user_age"]');
@@ -173,7 +281,7 @@
             let role = [];
 
             if (roles.multiple) {
-                for (var i = 0; i < roles.options.length; i ++) {
+                for (let i = 0; i < roles.options.length; i ++) {
                     if (roles.options[i].selected) role.push(roles.options[i].value);
                 }
             } else role.push(roles.value);
@@ -191,9 +299,9 @@
                 )
             });
 
-            let user = await response.json();
+            let newUser = await response.json();
             let tbody = document.getElementById('all_users_table_body');
-            tbody.appendChild(userRow(user));
+            tbody.appendChild(userRow(newUser));
             newUserForm.reset();
             let usersTab = document.getElementById('users_table-tab');
             let event = new Event("click");
@@ -276,21 +384,20 @@
                                         </tr>
                                         </thead>
                                         <tbody style="vertical-align: middle;" id="all_users_table_body">
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                                                        <h5 class="modal-title" id="editModalLabel">Edit user</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
 
-                                                    <form class="modal-form" id="edit_form" onsubmit="submitEditForm(this); return false;">
+                                                    <form class="modal-form" id="edit_form" onsubmit="submitEditForm(); return false;">
                                                         <div class="form-group col-6 container-sm bg-white justify-content-center text-center">
                                                             <div class="modal-body">
                                                                 <div class="py-2" hidden>
                                                                     <div>
-                                                                        <input readonly
-                                                                               name="_method" value="patch" >
+                                                                        <input readonly name="_method" value="patch" >
                                                                     </div>
                                                                 </div>
                                                                 <div class="py-2">
@@ -397,7 +504,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                                            <button type="button" id="edit_modal_close_button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                                                             </button>
                                                             <input type="submit" value="Edit" class="btn btn-primary"/>
                                                         </div>
@@ -405,6 +512,124 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Edit user</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+
+                                                        <form class="modal-form" id="delete_form" onsubmit="submitDeleteForm(); return false;">
+                                                            <div class="form-group col-6 container-sm bg-white justify-content-center text-center">
+                                                                <div class="modal-body">
+                                                                    <div class="py-2" hidden>
+                                                                        <div>
+                                                                            <input readonly name="_method" value="delete" >
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        <div>
+                                                                            <label for="id_del"><strong>ID</strong></label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input readonly
+                                                                                   style="max-width: 400px"
+                                                                                   type="text" id="id_del"
+                                                                                   class="form-control"
+                                                                                   name="id_del" value="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        <div>
+                                                                            <label for="firstname_del"><strong>First name</strong></label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input readonly style="max-width: 400px"
+                                                                                   minlength="3" required
+                                                                                   type="text" id="firstname_del"
+                                                                                   class="form-control"
+                                                                                   name="firstname_del"
+                                                                                   placeholder="First name"
+                                                                                   value=""/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        <div>
+                                                                            <label for="lastName_del"><strong>Last
+                                                                                name</strong></label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input readonly style="max-width: 400px"
+                                                                                   minlength="3" required
+                                                                                   placeholder="Last name"
+                                                                                   type="text" id="lastName_del"
+                                                                                   class="form-control"
+                                                                                   name="lastname_del"
+                                                                                   value=""/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        <div>
+                                                                            <label for="age_del"><b>Age</b></label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input readonly style="max-width: 400px"
+                                                                                   min="0" required
+                                                                                   placeholder="Age"
+                                                                                   id="age_del"
+                                                                                   class="form-control"
+                                                                                   type="number"
+                                                                                   name="age_del"
+                                                                                   value=""/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        <div>
+                                                                            <label for="email_del"><b>Email</b></label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <input readonly style="max-width: 400px"
+                                                                                   required
+                                                                                   placeholder="Email"
+                                                                                   id="email_del" type="email"
+                                                                                   name="email_del"
+                                                                                   class="form-control"
+                                                                                   value=""/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="py-2">
+                                                                        <div>
+                                                                            <label for="role_del"><b>Role</b></label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <select disabled style="max-width: 400px"
+                                                                                    required
+                                                                                    multiple class="form-select"
+                                                                                    size="2"
+                                                                                    id="role_del"
+                                                                                    name="roles_del"
+                                                                            >
+                                                                                <option id="user_option_del" value="USER" >USER</option>
+                                                                                <option id="admin_option_del" value="ADMIN" >ADMIN</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" id="delete_modal_close_button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                                                </button>
+                                                                <input type="submit" value="Delete" class="btn btn-danger"/>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -522,18 +747,8 @@
                                 <th>Role</th>
                             </tr>
                             </thead>
-                            <tbody class="table" style="vertical-align: middle;">
-                            <tr>
-                                <!--                                <td th:text="${admin.id}">id</td>-->
-                                <!--                                <td th:text="${admin.firstname}">first name</td>-->
-                                <!--                                <td th:text="${admin.lastName}">last name</td>-->
-                                <!--                                <td th:text="${admin.age}">age</td>-->
-                                <!--                                <td th:text="${admin.email}">email</td>-->
-                                <!--                                <td><label class="p-0" th:each="role : ${admin.roles}">-->
-                                <!--                                    <label class="p-0" th:text="${role}">ROLE</label>-->
-                                <!--                                    &nbsp;-->
-                                </label></td>
-                            </tr>
+                            <tbody id="user_table_body  " class="table" style="vertical-align: middle;">
+
                             </tbody>
                         </table>
                     </div>
