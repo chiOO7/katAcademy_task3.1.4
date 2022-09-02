@@ -3,14 +3,12 @@ package com.example.task_3_1_2.controllers;
 import com.example.task_3_1_2.models.User;
 import com.example.task_3_1_2.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
 @RestController
 @RequestMapping(path = "/data")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminRestController {
     @Autowired
     private UserRepository userRepository;

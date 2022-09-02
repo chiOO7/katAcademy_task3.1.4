@@ -5,25 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3846fd16-d6d3-4b21-a457-737b2e9ca404" name="Changes" comment="Alexander Vondokurcevs solution of task 3.1.4 v1 almost done">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/UserRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/servisec/UserDetails.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/configs/MvcConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/configs/SuccessUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/configs/SuccessUserHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/configs/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/configs/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/AdminRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/AdminRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/JSController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/JSController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/TestRestController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/scripts/scripts.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/add_user.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_3_1_2/controllers/UserRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin_rest.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin_rest.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin_rest_test.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/edit.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/error1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/script.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +35,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="task_3.1.4" />
+        <entry key="$PROJECT_DIR$" value="87f2d0ec6b03ab2fc726b23600777094bbab40db" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -77,26 +67,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/chi007/Загрузки/task3.1.2v2",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "spring.configuration.checksum": "6c35f339cfde6f31fdb8b95fd5556f61"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Chi007/IdeaProjects/task3.1.2v2&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;6c35f339cfde6f31fdb8b95fd5556f61&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Chi007\IdeaProjects\task3.1.2v2\src\main\resources\static\js" />
       <recent name="C:\Users\Chi007\IdeaProjects\task3.1.2v2\src\main\resources\static.js" />
       <recent name="C:\Users\Chi007\IdeaProjects\task3.1.2v2\src\main\resources\templates" />
       <recent name="C:\Users\Chi007\IdeaProjects\task3.1.2v2\src\main\resources\static" />
@@ -127,6 +118,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.DemoApplication" />
+        <item itemvalue="Application.DemoApplication" />
+        <item itemvalue="Application.DemoApplication" />
+        <item itemvalue="Application.DemoApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -154,7 +148,10 @@
       <workItem from="1660367662396" duration="7650000" />
       <workItem from="1660940415593" duration="6235000" />
       <workItem from="1661005813107" duration="6659000" />
-      <workItem from="1661062900761" duration="5691000" />
+      <workItem from="1661062900761" duration="7291000" />
+      <workItem from="1661963594320" duration="378000" />
+      <workItem from="1662051525880" duration="4359000" />
+      <workItem from="1662090006837" duration="1049000" />
     </task>
     <task id="LOCAL-00001" summary="Alexander Vondokurcevs solution of task 3.1.2">
       <created>1659548018569</created>
@@ -184,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660237129109</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Alexander Vondokurcevs solution of task 3.1.4 v1 almost done">
+      <created>1661068791197</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1661068791197</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,7 +203,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="All_task_almost_done" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
